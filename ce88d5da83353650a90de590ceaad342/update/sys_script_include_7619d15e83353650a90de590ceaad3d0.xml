@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>global.HealthIndicatorRemoteProvider</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>HealthIndicatorRemoteProvider</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[/**
+ * HealthIndicatorRemoteProvider
+ *
+ * Remote Table provider used to dynamically expose platform health indicators.
+ * Indicators are defined declaratively in a system property (JSON).
+ *
+ * Each indicator:
+ * - Executes an aggregate query
+ * - Computes a raw value
+ * - Derives status and score from thresholds (if defined)
+ * - Is returned as a virtual row in the Remote Table
+ */
+var HealthIndicatorRemoteProvider = Class.create();
+HealthIndicatorRemoteProvider.prototype = {
+
+    /**
+     * Constructor
+     * Initializes configuration and remote-table field mapping.
+     */
+    initialize: function() {
+        this.PROP_NAME = 'health.indicator';
+        this.DEFAULT_LIMIT = 100;
+        this.F = {
+            SYS_ID: 'sys_id',
+            KEY: 'u_name',
+            KPI: 'u_short_description',
+            DOMAIN: 'u_category',
+            SOURCE: 'u_source',
+            VALUE: 'u_value',
+            SCORE: 'u_score',
+            STATUS: 'u_status',
+            CALCULATED: 'u_calculated',
+            THRESHOLD_DIRECTION: 'u_threshold_direction',
+            THRESHOLD_WARNING: 'u_threshold_warning',
+            THRESHOLD_CRITICAL: 'u_threshold_critical'
+        };
+    },
+
+    /**
+     * Entry point called by the Remote Table engine.
+     *
+     * @param {Object} v_table - Remote table result object (supports addRow)
+     * @param {Object} v_query - Query context (limit, encoded query, etc.)
+     */
+    executeQuery: function(v_table, v_query) {
+        var defs = this._loadIndicatorDefs();
+        if (!defs || defs.length == 0) {
+            return;
+        }
+
+        var now = new GlideDateTime();
+
+        for (var i = 0; i < defs.length; i++) {
+            var def = defs[i];
+            var row = this._buildBaseRow(def, now);
+
+            try {
+                var result = this._evaluateIndicator(def);
+
+                row[this.F.VALUE] = result.value;
+                row[this.F.STATUS] = result.status;
+                row[this.F.SCORE] = parseInt(result.score, 10);
+
+            } catch (e) {
+                row[this.F.VALUE] = '';
+                row[this.F.STATUS] = 'critical';
+                row[this.F.SCORE] = 0;
+            }
+
+            v_table.addRow(row);
+        }
+    },
+
+    /**
+     * Load and validate indicator definitions from system property.
+     *
+     * @returns {Array<Object>} list of indicator definitions
+     */
+    _loadIndicatorDefs: function() {
+        var raw = gs.getProperty(this.PROP_NAME, '[]');
+        var parsed;
+        try {
+            parsed = JSON.parse(raw);
+        } catch (e) {
+            gs.warn('[HealthIndicatorRemoteProvider] Invalid JSON in property: ' + this.PROP_NAME);
+            return [];
+        }
+
+        var valid = []; // filter valid indicators
+
+        for (var i = 0; i < parsed.length; i++) {
+            var d = parsed[i];
+
+            if (!d.key || !d.domain || !d.kpi || !d.source.mode || !d.source.table || !d.source.agg) {
+                continue;
+            }
+
+            valid.push(d);
+        }
+
+        return valid;
+    },
+
+    /**
+     * Build the base Remote Table row (metadata only).
+     *
+     * @param {Object} def - indicator definition
+     * @param {GlideDateTime} now
+     * @returns {Object}
+     */
+    _buildBaseRow: function(def, now) {
+        var row = {};
+
+        row[this.F.SYS_ID] = gs.generateGUID();
+        row[this.F.KEY] = def.key;
+        row[this.F.KPI] = def.kpi;
+        row[this.F.DOMAIN] = def.domain;
+        row[this.F.CALCULATED] = now;
+        if (def.source.table)
+            row[this.F.SOURCE] = def.source.table;
+        if (def.thresholds.direction)
+            row[this.F.THRESHOLD_DIRECTION] = def.thresholds.direction;
+        if (def.thresholds.warning)
+            row[this.F.THRESHOLD_WARNING] = def.thresholds.warning;
+        if (def.thresholds.critical)
+            row[this.F.THRESHOLD_CRITICAL] = def.thresholds.critical;
+
+        return row;
+    },
+
+
+    /**
+     * Evaluate a single indicator and compute:
+     * - value
+     * - status
+     * - score
+     *
+     * @param {Object} def - indicator definition
+     * @returns {{value: number, status: string, score: number|null}}
+     */
+    _evaluateIndicator: function(def) {
+        var source = def.source;
+        var mode = String(source.mode).toLowerCase();
+
+        if (mode == 'aggregate') {
+            var value = this._runAggregate(source.table, source.agg, source.field, source.query);
+
+            var status = '';
+            var score;
+
+            if (def.thresholds) {
+                status = this._statusFromThresholds(value, def.thresholds);
+                score = this._scoreFromThresholds(value, def.thresholds);
+            }
+
+            return {
+                value: value,
+                status: status,
+                score: score
+            };
+
+        } else {
+            gs.warn('Unsupported source.mode: ' + source.mode);
+        }
+    },
+
+    /**
+     * Execute a GlideAggregate query.
+     *
+     * @param {string} table
+     * @param {string} agg
+     * @param {string} field
+     * @param {string} encodedQuery
+     * @returns {number}
+     */
+    _runAggregate: function(table, agg, field, encodedQuery) {
+
+        if (!table || !agg || !field || !encodedQuery)
+            return 0;
+        try {
+            var ga = new GlideAggregate(table);
+            ga.addEncodedQuery(encodedQuery);
+            ga.addAggregate(agg, field);
+			ga.setGroup(false);
+            ga.query();
+            if (!ga.next()) {
+                return 0;
+            }
+            return ga.getAggregate(agg, field);
+			
+        }catch(e){
+			gs.error('Error while running _runAggregate' + e);
+			throw "Error while running _runAggregate" +e;
+		}
+
+    },
+
+    /**
+     * Determine indicator status from thresholds.
+     *
+     * @param {number} value
+     * @param {Object} thresholds
+     * @returns {string} ok | warning | critical
+     */
+    _statusFromThresholds: function(value, thresholds) {
+        var warn = thresholds.warning;
+        var crit = thresholds.critical;
+        var direction = thresholds.direction || 'higher_is_worse';
+
+        var status = 'ok';
+
+        if (direction == 'higher_is_worse') {
+            if (crit && value >= crit) {
+                status = 'critical';
+            } else if (warn && value >= warn) {
+                status = 'warning';
+            }
+        } else {
+            if (crit && value <= crit) {
+                status = 'critical';
+            } else if (warn && value <= warn) {
+                status = 'warning';
+            }
+        }
+
+        return status;
+    },
+
+    /**
+     * Compute a health score (0–100) based on distance from thresholds.
+     *
+     * @param {number} value
+     * @param {Object} thresholds
+     * @returns {number}
+     */
+    _scoreFromThresholds: function(value, thresholds) {
+        var warn = thresholds.warning;
+        var crit = thresholds.critical;
+        var direction = thresholds.direction || 'higher_is_worse';
+
+        if (!warn || !crit || warn == crit) {
+            return 100;
+        }
+
+        var score;
+
+        if (direction == 'higher_is_worse') {
+            if (value <= warn) {
+                score = 100;
+            } else if (value >= crit) {
+                score = 0;
+            } else {
+                score = 100 * (1 - ((value - warn) / (crit - warn)));
+            }
+        } else {
+            if (value >= warn) {
+                score = 100;
+            } else if (value <= crit) {
+                score = 0;
+            } else {
+                score = 100 * ((value - crit) / (warn - crit));
+            }
+        }
+
+        if (score < 0) score = 0;
+        if (score > 100) score = 100;
+
+        return Math.round(score);
+    },
+
+    type: 'HealthIndicatorRemoteProvider'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-12-15 23:07:46</sys_created_on>
+        <sys_id>7619d15e83353650a90de590ceaad3d0</sys_id>
+        <sys_mod_count>19</sys_mod_count>
+        <sys_name>HealthIndicatorRemoteProvider</sys_name>
+        <sys_package display_value="Platform Health Core" source="ce88d5da83353650a90de590ceaad342">ce88d5da83353650a90de590ceaad342</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Platform Health Core">ce88d5da83353650a90de590ceaad342</sys_scope>
+        <sys_update_name>sys_script_include_7619d15e83353650a90de590ceaad3d0</sys_update_name>
+        <sys_updated_by>jenzi</sys_updated_by>
+        <sys_updated_on>2025-12-17 11:22:19</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>7619d15e83353650a90de590ceaad3d0</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-12-15 23:07:46</sys_created_on>
+        <sys_id>c359555e83353650a90de590ceaad391</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-12-15 23:07:46</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

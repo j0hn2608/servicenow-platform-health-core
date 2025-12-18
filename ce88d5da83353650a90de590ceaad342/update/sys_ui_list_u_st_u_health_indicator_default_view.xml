@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="u_st_u_health_indicator" version="2" view="default_view">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_name</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>d514ed1e83b53650a90de590ceaad391</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_short_description</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>5d14ed1e83b53650a90de590ceaad391</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_value</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>d114ed1e83b53650a90de590ceaad392</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>true</average_value>
+            <element>u_score</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>5914ed1e83b53650a90de590ceaad392</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_status</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>dd14ed1e83b53650a90de590ceaad392</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_category</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>5514ed1e83b53650a90de590ceaad393</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_source</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>d914ed1e83b53650a90de590ceaad393</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_calculated</element>
+            <list_id display_value="u_st_u_health_indicator" element="NULL" name="u_st_u_health_indicator" parent="NULL" relationship="NULL" sys_domain="global" view="19142d1e83b53650a90de590ceaad316">1914ed1e83b53650a90de590ceaad390</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_id>5114ed1e83b53650a90de590ceaad394</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>u_st_u_health_indicator</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-12-15 23:54:37</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1914ed1e83b53650a90de590ceaad390</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>u_st_u_health_indicator</sys_name>
+            <sys_package display_value="Platform Health Core" source="ce88d5da83353650a90de590ceaad342">ce88d5da83353650a90de590ceaad342</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Platform Health Core">ce88d5da83353650a90de590ceaad342</sys_scope>
+            <sys_update_name>sys_ui_list_u_st_u_health_indicator_default_view</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-12-15 23:54:37</sys_updated_on>
+            <sys_user/>
+            <view display_value="default_view" name="default_view">19142d1e83b53650a90de590ceaad316</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

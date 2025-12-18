@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_vtable">
+    <sys_script_vtable action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <advanced>true</advanced>
+        <cache_empty_query_results>true</cache_empty_query_results>
+        <cache_isolation_level>SYSTEM</cache_isolation_level>
+        <cache_strategy>CACHE_BY_QUERY</cache_strategy>
+        <cache_ttl>2</cache_ttl>
+        <delete_script><![CDATA[(function executeDelete(v_record) {
+     // Parameters:
+     //      v_record - a map of field names and values containing (among others) the
+     //              sys_id of the record that needs to be deleted on the remote system
+     //          v_record.<field_name>                  - fields in the remote table GlideRecord
+     //          v_record.setLastErrorMessage(message)   - signal an error
+ 
+     // Sample code:
+     //  try {
+     //      update-external-system;
+     //      if (there-was-an-error) {
+     //          var message = ...;
+     //          v_record.setLastErrorMessage(message);
+     //      }
+     //  } catch (ex) {
+     //      var message = ex.getMessage();
+     //      v_record.setLastErrorMessage(message);
+     //  }
+  })(v_record);]]></delete_script>
+        <editable>false</editable>
+        <enhanced_capacity>false</enhanced_capacity>
+        <flow/>
+        <insert_script><![CDATA[(function executeInsert(v_record) {
+     // Parameters:
+     //      v_record is a map of field names and values containing the sys_id of the
+     //              record and the fields that need to be inserted in the record on the
+     //              remote system (source of data)
+     
+     //          v_record.<field_name>                   - fields in the remote table GlideRecord
+     //          v_record.setLastErrorMessage(message)   - signal an error
+ 
+     // Sample code:
+     //  try {
+     //      update-external-system;
+     //      if (there-was-an-error) {
+     //          var message = ...;
+     //          v_record.setLastErrorMessage(message);
+     //      }
+     //  } catch (ex) {
+     //      var message = ex.getMessage();
+     //      v_record.setLastErrorMessage(message);
+     //  }
+  })(v_record);]]></insert_script>
+        <name>Health Indicator Definition</name>
+        <script><![CDATA[(function executeQuery(v_table, v_query) {
+    new global.HealthIndicatorRemoteProvider().executeQuery(v_table, v_query);
+
+})(v_table, v_query);]]></script>
+        <sys_class_name>sys_script_vtable</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-12-15 23:15:37</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>37fa11d283753650a90de590ceaad339</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Health Indicator Definition</sys_name>
+        <sys_package display_value="Platform Health Core" source="ce88d5da83353650a90de590ceaad342">ce88d5da83353650a90de590ceaad342</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Platform Health Core">ce88d5da83353650a90de590ceaad342</sys_scope>
+        <sys_update_name>sys_script_vtable_37fa11d283753650a90de590ceaad339</sys_update_name>
+        <sys_updated_by>jenzi</sys_updated_by>
+        <sys_updated_on>2025-12-17 10:52:33</sys_updated_on>
+        <table>u_st_u_health_indicator</table>
+        <update_script><![CDATA[(function executeUpdate(v_record, v_changed_fields) {
+     // Parameters:
+     //    v_record - a map of field names and values containing the sys_id of the record
+     //          v_record.<field_name>                   - fields in the remote table GlideRecord
+     //          v_record.setLastErrorMessage(message)   - signal an error
+     //    v_changed_fields - a map of field names and values containing the sys_id of the
+     //          v_changed_fields.<field_name>           - changed fields in the remote table GlideRecord
+ 
+     // Sample code:
+     //  try {
+     //      update-external-system;
+     //      if (there-was-an-error) {
+     //          var message = ...;
+     //          v_record.setLastErrorMessage(message);
+     //      }
+     //  } catch (ex) {
+     //      var message = ex.getMessage();
+     //      v_record.setLastErrorMessage(message);
+     //  }
+  })(v_record, v_changed_fields);]]></update_script>
+    </sys_script_vtable>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>37fa11d283753650a90de590ceaad339</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-12-15 23:15:37</sys_created_on>
+        <sys_id>ca2b55d283753650a90de590ceaad391</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-12-15 23:15:37</sys_updated_on>
+        <table>sys_script_vtable</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>
