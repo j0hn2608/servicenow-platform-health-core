@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description/>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>health.indicator</name>
+        <read_roles/>
+        <suffix/>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-12-15 23:06:02</sys_created_on>
+        <sys_id>89c8d11e83353650a90de590ceaad36c</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>health.indicator</sys_name>
+        <sys_package display_value="Platform Health Core" source="ce88d5da83353650a90de590ceaad342">ce88d5da83353650a90de590ceaad342</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Platform Health Core">ce88d5da83353650a90de590ceaad342</sys_scope>
+        <sys_update_name>sys_properties_89c8d11e83353650a90de590ceaad36c</sys_update_name>
+        <sys_updated_by>jenzi</sys_updated_by>
+        <sys_updated_on>2025-12-18 13:16:26</sys_updated_on>
+        <type>string</type>
+        <value>[&#13;
+  {&#13;
+    "key": "instance.node_availability",&#13;
+    "domain": "Instance Health",&#13;
+    "kpi": "Unavailable nodes",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "sys_cluster_state",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "status!=online"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 1,&#13;
+      "critical": 2&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "instance.user_activity",&#13;
+    "domain": "Instance Health",&#13;
+    "kpi": "Active user sessions",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "v_user_session",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "active=true"&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "perf.slow_requests_15m",&#13;
+    "domain": "Performance &amp; Stability",&#13;
+    "kpi": "Slow requests (last 15 minutes)",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "syslog_transaction",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "sys_created_on&gt;=javascript:gs.minutesAgoStart(15)^response_time&gt;3000"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 3,&#13;
+      "critical": 10&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "perf.processing_backlog",&#13;
+    "domain": "Performance &amp; Stability",&#13;
+    "kpi": "Pending background processing items",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "sysevent",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state=ready"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 50,&#13;
+      "critical": 100&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "errors.critical_failures_1h",&#13;
+    "domain": "Errors &amp; Failures",&#13;
+    "kpi": "Critical errors (last hour)",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "syslog",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "sys_created_on&gt;=javascript:gs.hoursAgoStart(1)^levelIN2,3"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 1,&#13;
+      "critical": 5&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "errors.automation_failures",&#13;
+    "domain": "Errors &amp; Failures",&#13;
+    "kpi": "Failed automation executions",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "sys_flow_context",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state=ERROR"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 5,&#13;
+      "critical": 15&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "errors.automation_stuck_queue",&#13;
+    "domain": "Errors &amp; Failures",&#13;
+    "kpi": "Automations stuck in queue",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "sys_flow_context",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state=QUEUED^sys_created_on&lt;=javascript:gs.minutesAgoEnd(30)"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 1,&#13;
+      "critical": 5&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "errors.scheduled_jobs_failing",&#13;
+    "domain": "Errors &amp; Failures",&#13;
+    "kpi": "Scheduled jobs failing",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "sys_trigger",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state!=0^state!=1^sys_updated_on&gt;=javascript:gs.hoursAgoStart(24)"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 1,&#13;
+      "critical": 5&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "integration.mid_unavailable",&#13;
+    "domain": "Integrations &amp; MID Server Health",&#13;
+    "kpi": "Unavailable MID Servers",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "ecc_agent",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "status!=Up"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 1,&#13;
+      "critical": 2&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "integration.failures_1h",&#13;
+    "domain": "Integrations &amp; MID Server Health",&#13;
+    "kpi": "Integration failures (last hour)",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "ecc_queue",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state=error^sys_created_on&gt;=javascript:gs.hoursAgoStart(1)"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 5,&#13;
+      "critical": 15&#13;
+    }&#13;
+  },&#13;
+  {&#13;
+    "key": "integration.backlog",&#13;
+    "domain": "Integrations &amp; MID Server Health",&#13;
+    "kpi": "Integration message backlog",&#13;
+    "source": {&#13;
+      "mode": "aggregate",&#13;
+      "table": "ecc_queue",&#13;
+      "agg": "COUNT",&#13;
+      "field": "sys_id",&#13;
+      "query": "state=ready"&#13;
+    },&#13;
+    "thresholds": {&#13;
+      "direction": "higher_is_worse",&#13;
+      "warning": 50,&#13;
+      "critical": 150&#13;
+    }&#13;
+  }&#13;
+]</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=89c8d11e83353650a90de590ceaad36c"/>
+</record_update>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="59b9dd9e83353650a90de590ceaad3ff" label="Health Indicator" max_length="40" name="u_st_u_health_indicator" type="collection">
+        <element label="Threshold Critical" max_length="40" name="u_threshold_critical" type="integer"/>
+        <element label="Short description" max_length="40" name="u_short_description" type="string"/>
+        <element choice="1" label="Status" max_length="40" name="u_status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="OK" value="ok"/>
+                <element inactive_on_update="false" label="Critical" value="critical"/>
+                <element inactive_on_update="false" label="Warning" value="warning"/>
+            </choice>
+        </element>
+        <element label="Threshold Warning" max_length="40" name="u_threshold_warning" type="integer"/>
+        <element label="Score" max_length="40" name="u_score" type="integer"/>
+        <element label="Last Calculated" max_length="40" name="u_calculated" type="glide_date_time"/>
+        <element choice="1" label="Threshold Direction" max_length="40" name="u_threshold_direction" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Higher is worse" value="higher_is_worse"/>
+                <element inactive_on_update="false" label="Lower is worse" value="lower_is_worse"/>
+            </choice>
+        </element>
+        <element choice="1" label="Category" max_length="40" name="u_category" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Failures" value="Errors &amp; Failures"/>
+                <element inactive_on_update="false" label="Performance" value="Performance &amp; Stability"/>
+                <element inactive_on_update="false" label="Integrations" value="Integrations &amp; MID Server Health"/>
+                <element inactive_on_update="false" label="Instance" value="Instance Health"/>
+            </choice>
+        </element>
+        <element label="Source" max_length="40" name="u_source" type="string"/>
+        <element label="Name" max_length="40" name="u_name" type="string" unique="true"/>
+        <element label="Value" max_length="40" name="u_value" type="string"/>
+        <index name="index" unique="true">
+            <element name="u_name"/>
+        </index>
+    </element>
+</database>
